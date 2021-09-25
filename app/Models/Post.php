@@ -11,4 +11,6 @@ class Post extends Model
     
     //essa linha n é sempre necessaria, ela relaciona manualmante esse model a table post no sql
     protected $table = 'posts';
+
+    protected $fillable = ['title', 'content'];
 }

@@ -1,5 +1,5 @@
 <h1>Cadastrar novo post</h1>
-<form action="" method="POST">
+<form action="{{route('posts.store')}}" method="POST">
     @csrf
     <input type="text" name="title" id="title" placeholder="Titulo">
     <textarea name="content" id="content" cols="30" rows="4" placeholder="Conteudo"></textarea>
