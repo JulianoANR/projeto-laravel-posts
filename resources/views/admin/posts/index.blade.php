@@ -8,5 +8,9 @@
 <h1> Posts Index</h1>
 
 @foreach ($posts as $post)
-    <p>{{$post->title}}</p>[ <a href="{{route('posts.show', $post->id)}}">Detalhes</a>]
+    <p>{{$post->title}}</p>
+    [ 
+    <a href="{{route('posts.show', $post->id)}}">Detalhes</a>
+    <a href="{{route('posts.edit', $post->id)}}">Edit</a>
+    ]
 @endforeach
