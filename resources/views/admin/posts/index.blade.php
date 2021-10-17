@@ -14,3 +14,6 @@
     <a href="{{route('posts.edit', $post->id)}}">Edit</a>
     ]
 @endforeach
+<hr>
+
+{{ $posts->links() }}

@@ -10,7 +10,9 @@ class PostController extends Controller
 {
     public function index(){
 
-        $posts = Post::get();
+        //paginate por default traz 15 elementos por pagina, mas basta passar com parametro pra definir
+        $posts = Post::orderBy('id', 'ASC')->paginate(10);
+        //$posts = Post::latest()->paginate(10); Orderna dos mais antigos
 
         return view('admin.posts.index', compact('posts'));
     }
