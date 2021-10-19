@@ -85,4 +85,13 @@ class PostController extends Controller
         return redirect()->route('posts.index')
         ->with('message', 'Post modificado com sucesso');
     }
+    
+    public function search(Request $request)
+    {
+       $posts = Post::where('title', 'LIKE', "%{{$request->search}}%")
+                        ->orWhere('content', 'LIKE', "%{{$request->search}}%")
+                        ->paginate();
+        
+        return view('admin.posts.index', compact('posts'));
+    }
 }

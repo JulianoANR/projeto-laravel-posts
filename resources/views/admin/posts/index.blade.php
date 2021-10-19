@@ -5,6 +5,13 @@
     {{session('message')}}
     </div>
 @endif
+
+<form action="{{route('posts.search')}}" method="post">
+    @csrf
+    <input type="text" name="search" placeholder="search">
+    <button type="submit">Filtrar</button>
+</form>
+
 <h1> Posts Index</h1>
 
 @foreach ($posts as $post)
