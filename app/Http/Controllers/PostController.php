@@ -11,7 +11,7 @@ class PostController extends Controller
     public function index(){
 
         //paginate por default traz 15 elementos por pagina, mas basta passar com parametro pra definir
-        $posts = Post::orderBy('id', 'ASC')->paginate(10);
+        $posts = Post::latest()->paginate(3);
         //$posts = Post::latest()->paginate(10); Orderna dos mais antigos
 
         return view('admin.posts.index', compact('posts'));
@@ -88,10 +88,11 @@ class PostController extends Controller
     
     public function search(Request $request)
     {
-       $posts = Post::where('title', 'LIKE', "%{{$request->search}}%")
-                        ->orWhere('content', 'LIKE', "%{{$request->search}}%")
-                        ->paginate();
-        
-        return view('admin.posts.index', compact('posts'));
+        $filters = $request->except('_token');
+
+        $posts = Post::where('title', 'LIKE', "%{$request->search}%")
+                        ->orWhere('content', 'LIKE', "%{$request->search}%")
+                        ->paginate();    
+        return view('admin.posts.index', compact('posts', 'filters'));
     }
 }
