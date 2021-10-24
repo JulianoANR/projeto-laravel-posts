@@ -1,3 +1,9 @@
+@extends('admin.layouts.app')
+
+@section('title', 'Listagem dos Posts')
+
+@section('content')
+
 <a href="{{route('posts.create')}}">Criar novo post</a>
 <hr>
 @if (session('message'))
@@ -31,3 +37,4 @@
     {{ $posts->links() }}
 @endif
 
+@endsection
