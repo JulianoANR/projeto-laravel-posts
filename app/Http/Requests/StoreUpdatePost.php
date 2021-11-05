@@ -25,7 +25,10 @@ class StoreUpdatePost extends FormRequest
     {
         return [
             'title' => 'required|min:3|max:160',
-            'content' => ['required','min:5','max:1000'],
+            'content' => ['nullable','min:5','max:1000'],
+            //o laravel tem o atributo image q ja valida se o arquivo é uma imagem
+            //Aqui pode validar o peso da imagem, e as dimensoes tambem
+            'image' => ['required', 'image'],
         ];
     }
 }
