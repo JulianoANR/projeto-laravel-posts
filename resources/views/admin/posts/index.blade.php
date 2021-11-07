@@ -22,6 +22,7 @@
 
 @foreach ($posts as $post)
     <p>
+        <img style="max-width: 100px;" src="{{ url("storage/{$post->image}") }}" alt="{{ $post->image }}">
         {{$post->title}}
         [ 
         <a href="{{route('posts.show', $post->id)}}">Detalhes</a>

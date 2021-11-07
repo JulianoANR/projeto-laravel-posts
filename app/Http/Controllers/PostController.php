@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreUpdatePost;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -29,7 +30,29 @@ class PostController extends Controller
         //...O ideal era listar todos os elementos aqui, porem como eu ja fiz o forms com os names igual ao da tabela, eu posso dar um all()
         // ]);
 
-        Post::create($request->all());
+        //Formas de pegar a imagem : ******
+        //$request->file('image');
+        //$request->image; Aqui ele detecta q é uma imagem
+
+        $data = $request->all();
+
+        //Validando a imagem
+        if ($request->image->isValid()){
+            //aqui ja ta configurado no config que o padrao é o arquivo storage com o link ao public
+            //assim botando o posts ele entende que é uma pasta posts dentro desse diretorio
+            //isso retorna o path do arquivo
+
+            //essa linha pega o nome inique padrao
+            //$image = $request->image->store('posts');
+
+            //porem eu quero usar o nome do proprio post q tb é unico, slug deixa os caracteres usaveis, nao esquecer de importar com o use
+            $nameFile = Str::of($request->title)->slug('-') . '.' .$request->image->getClientOriginalExtension();
+            $image = $request->image->storeAs('posts', $nameFile);
+            
+            $data['image'] = $image;
+        }
+
+        Post::create($data);
 
         return redirect()
         ->route('posts.index')
