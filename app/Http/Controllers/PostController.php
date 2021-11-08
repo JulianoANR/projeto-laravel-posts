@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreUpdatePost;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class PostController extends Controller
@@ -78,6 +79,11 @@ class PostController extends Controller
         
         if (!$post = Post::find($id)) {
             return redirect()->route('posts.index');
+
+            if (Storage::exists($post->image)) {
+                //Delete o arquivo antigo de imagem
+                Storage::delete($post->image);
+            }
         }
 
         $post->delete();
@@ -103,7 +109,25 @@ class PostController extends Controller
             return redirect()->back();
         }
 
-        $post->update($request->all());
+        $data = $request->all();
+
+        //Validando a imagem
+        if ($request->image && $request->image->isValid()){
+
+            //Lembrar de dar o use do Storage
+            //Aqui verifica se existe ja um arquivo com esse nome
+            if (Storage::exists($post->image)) {
+                //Delete o arquivo antigo
+                Storage::delete($post->image);
+            }
+            
+            $nameFile = Str::of($request->title)->slug('-') . '.' .$request->image->getClientOriginalExtension();
+            $image = $request->image->storeAs('posts', $nameFile);
+            
+            $data['image'] = $image;
+        }
+
+        $post->update($data);
 
         return redirect()->route('posts.index')
         ->with('message', 'Post modificado com sucesso');
